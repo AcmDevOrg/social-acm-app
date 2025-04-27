@@ -2,11 +2,13 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 
 const geistSans = Geist({
+  src: "../fonts/Geist/Geist-VariableFont_wght.ttf",
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
 const geistMono = Geist_Mono({
+  src: "../fonts/Geist_Mono/GeistMono-VariableFont_wght.ttf",
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
