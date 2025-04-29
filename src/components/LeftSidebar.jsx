@@ -24,8 +24,8 @@ export default function LeftSidebar() {
           <RiHome4Fill className='w-7 h-7' />
           <span className='font-bold hidden xl:inline'>Home</span>
         </Link>        
-        <div className='bg-blue-400 text-white text-3xl rounded-full hover:brightness-95 transition-all duration-200 
-        w-48 h-9 shadow-md hidden xl:inline text-center font-bold'>
+        <div className='bg-blue-400 text-white text-xl rounded-full hover:brightness-95 transition-all duration-200 
+        w-24 h-9 shadow-md xl:inline text-center p-1 font-bold'>
           <SignedIn>
            <SignOutButton />
           </SignedIn>          

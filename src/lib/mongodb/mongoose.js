@@ -12,7 +12,7 @@ export const connect = async () => {
     try {
         
         await mongoose.connect(process.env.MONGODB_URI, {
-            dbName: 'acm-nextjs-social',
+            dbName: 'social-acm-app',
              useNewUrlParser: true,
              useUnifiedTopology: true,
         });
