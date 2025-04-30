@@ -8,7 +8,7 @@ import {
   SignInButton, 
   SignOutButton,
 } from '@clerk/nextjs';
-// import MiniProfile from './MiniProfile';
+import MiniProfile from './MiniProfile';
 
 export default function LeftSidebar() {
   return (
@@ -35,7 +35,7 @@ export default function LeftSidebar() {
         </div>
       </div>
       <SignedIn>
-      {/* <MiniProfile /> */}
+      <MiniProfile />
       </SignedIn>
     </div>
   );
