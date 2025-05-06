@@ -56,6 +56,7 @@ export default function Input() {
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    console.log("Download URL:", downloadURL);
                     setImageFileUrl(downloadURL);
                     setImageFileUploading(false);
                 });
@@ -91,7 +92,8 @@ export default function Input() {
     }
   return (
     <div className='flex border-b border-gray-200 p-3 space-x-3 w-full'>
-        <img 
+        <Image
+        width={5} height={5}
         src={user.imageUrl} 
         alt='user-img' 
         className='h-11 w-11 rounded-full cursor-pointer hover:brightness-95 object-cover' 
@@ -105,11 +107,12 @@ export default function Input() {
             onChange={(e) => setText(e.target.value)}
             ></textarea>
             {selectedFile && (
-                <img
+                <Image
                 onClick={() => {
                     setSelectedFile(null);
                     setImageFileUrl(null);
                 }}
+                width={5} height={5}
                 src={imageFileUrl} 
                 alt='selected-img' 
                 className={`w-full max-h-[250px] object-cover cursor-pointer ${
