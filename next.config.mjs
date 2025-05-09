@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
+    images: {      
       remotePatterns: [
         {
           protocol: 'https',
@@ -14,7 +14,21 @@ const nextConfig = {
           protocol: 'https',
           hostname: 'social-acm-app.firebasestorage.app',
         },
+        {
+          protocol: 'https',
+          hostname: 'firebasestorage.googleapis.com',
+        },
       ],
+    },
+    async headers() {
+      return [
+        {
+          source: '/api/:path*',
+          headers: [
+            { key: '', value: '' },
+          ],
+        },
+      ]
     },
   };
   
