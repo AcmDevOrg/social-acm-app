@@ -65,14 +65,11 @@ export default function Input() {
     };
 
     const handleSubmit = async () => {
-        setPostLoading(true);
-        const ALLOWED_ORIGINS=[
-            'https://social-acm-app.vercel.app',
-        ]
+        setPostLoading(true);        
         const response = await fetch('/api/post/create', {
             method: 'POST',
             headers: {
-                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Origin': 'https://social-acm-app.vercel.app',
                 // 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
