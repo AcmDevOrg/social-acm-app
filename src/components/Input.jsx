@@ -68,9 +68,8 @@ export default function Input() {
         setPostLoading(true);        
         const response = await fetch('/api/post/create', {
             method: 'POST',
-            headers: {
-                'Access-Control-Allow-Origin': 'https://social-acm-app.vercel.app',
-                // 'Content-Type': 'application/json',
+            headers: {                
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 userMongoId: user.publicMetadata.userMongoId,
