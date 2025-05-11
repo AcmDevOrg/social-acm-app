@@ -10,7 +10,7 @@ const firebaseConfig = {
   projectId: "social-acm-app",
   storageBucket: "social-acm-app.firebasestorage.app",
   messagingSenderId: "858521839676",
-  appId: "1:858521839676:web:71da3fcee6f951cb753b39"
+  appId: "1:858521839676:web:71da3fcee6f951cb753b39",
 };
 
 // Initialize Firebase
