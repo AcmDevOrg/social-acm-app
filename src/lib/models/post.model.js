@@ -1,9 +1,14 @@
 import mongoose from "mongoose";
-// eslint-disable-next-line no-unused-vars
+
 import { comment } from "postcss";
 
 const postSchema = new mongoose.Schema(
     {
+        userMongoId: {
+            type: String,
+            required: true,
+            unique: true,
+        },
         text: {
             type: String,
             required: true,

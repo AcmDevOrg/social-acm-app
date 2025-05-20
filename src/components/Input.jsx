@@ -1,69 +1,77 @@
 'use client'
 import React, { useCallback } from 'react';
-import { SignIn, useUser } from '@clerk/nextjs';
+import { useUser } from '@clerk/nextjs';
 import { useRef, useState, useEffect } from 'react';
 import { MdAddAPhoto } from "react-icons/md";
-import { app } from '@/firebase';
-import { 
-    getStorage, 
-    ref, 
-    uploadBytesResumable, 
-    getDownloadURL, 
-} from 'firebase/storage';
 import Image from 'next/image';
 
 
 export default function Input() {
-    const { user, isSignedIn, isLoaded } = useUser();    
+    const { user, isSignedIn, isLoaded } = useUser();
+    const imagePickRef = useRef(null);
+
     const [imageFileUrl, setImageFileUrl] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
     const [imageFileUploading, setImageFileUploading] = useState(false);
     const [text, setText] = useState('');
     const [postLoading, setPostLoading] = useState(false);
-    const imagePickRef = useRef(null);
     
-    const addImageToPost = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setSelectedFile(file);
-            setImageFileUrl(URL.createObjectURL(file));
-        }
-    };
-        useEffect(() => {
-        if (selectedFile) {
-            uploadImageToStorage();
-        }
-    }, [selectedFile]);
+    
+    // useEffect(() => {
+    //     if (selectedFile) {
+    //         uploadImageToCloudinary();
+    //     }
+    // }, [selectedFile]);
 
-    const uploadImageToStorage = async () => {
-        setImageFileUploading(true);
-        const storage = getStorage(app);
-        const fileName = new Date().getTime() + '-' + selectedFile.name;
-        const storageRef = ref(storage, fileName);
-        const uploadTask = uploadBytesResumable(storageRef, selectedFile);
-        uploadTask.on(
-            'state_changed',
-            (snapshot) => {
-                const progress = 
-                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log('Upload is ' + progress + '% done');
-            },
-            (error) => {
-                console.log(error);
-                setImageFileUploading(false);
-                setSelectedFile(null);
-                setImageFileUrl(null);
-            },
-            () => {
-                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    console.log("Download URL:", downloadURL);
-                    setImageFileUrl(downloadURL);
-                    setImageFileUploading(false);
-                });
-            }
-        );
-    };
+  // ✅ File input change handler
+  const handleFileChange = async (e) => {
+  const file = e.target.files?.[0];
+  if (file) {
+    setSelectedFile(file);
 
+    // Preview the image locally
+      const base64 = await toBase64(file);
+      setImageFileUrl(base64);
+
+      // Upload image
+      setImageFileUploading(true);
+      try {
+        const uploadedUrl = await uploadImageToCloudinary(file);
+        setImageFileUrl(uploadedUrl); // Final uploaded URL
+      } catch (err) {
+        console.error('Upload error:', err);
+      } finally {
+        setImageFileUploading(false);
+      }
+    }
+  };
+
+  const uploadImageToCloudinary = async (file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const res = await fetch('/api/upload', {
+    method: 'POST',
+    body: formData,    
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error || 'Upload failed');
+  }
+
+  return data.url || null;
+};
+
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+    });
+    
     const handleSubmit = async () => {
         setPostLoading(true);        
         const response = await fetch('/api/post/create', {
@@ -72,7 +80,7 @@ export default function Input() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                userMongoId: user.publicMetadata.userMongoId,
+                userMongoId: user?.publicMetadata?.userMongoId,
                 name: user.fullName,
                 username: user.username,
                 text,
@@ -93,8 +101,8 @@ export default function Input() {
   return (
     <div className='flex border-b border-gray-200 p-3 space-x-3 w-full'>
         <Image
-        width={5} height={5}
-        src={user.imageUrl} 
+        width={250} height={250}
+        src={user?.imageUrl} 
         alt='user-img' 
         className='h-11 w-11 rounded-full cursor-pointer hover:brightness-95 object-cover' 
         />
@@ -106,13 +114,14 @@ export default function Input() {
             value={text} 
             onChange={(e) => setText(e.target.value)}
             ></textarea>
-            {selectedFile && (
+            {selectedFile && imageFileUrl &&(
                 <Image
                 onClick={() => {
                     setSelectedFile(null);
                     setImageFileUrl(null);
                 }}
-                width={5} height={5}
+                width={300} 
+                height={300}
                 src={imageFileUrl} 
                 alt='selected-img' 
                 className={`w-full max-h-[250px] object-cover cursor-pointer ${
@@ -130,7 +139,7 @@ export default function Input() {
                     ref={imagePickRef}
                     accept='image/*'
                     hidden
-                    onChange={addImageToPost} 
+                    onChange={handleFileChange} 
                     />
                 <button 
                 disabled={text.trim() === '' || postLoading || imageFileUploading}
