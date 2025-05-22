@@ -3,12 +3,7 @@ import mongoose from "mongoose";
 import { comment } from "postcss";
 
 const postSchema = new mongoose.Schema(
-    {
-        userMongoId: {
-            type: String,
-            required: true,
-            unique: true,
-        },
+    {        
         text: {
             type: String,
             required: true,

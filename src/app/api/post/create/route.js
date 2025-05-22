@@ -3,14 +3,11 @@ import { connect } from "@/lib/mongodb/mongoose";
 import { currentUser } from "@clerk/nextjs/server";
 
 
-export const POST = async (req) => {
+export const POST = async (req) => {    
     const user = await currentUser();
-    const userMongoId = user?.publicMetadata?.userMongoId;
-    console.log('user', user);
     try {
         await connect();
         const data = await req.json();
-        
 
                 if (!user || user.publicMetadata.userMongoId !== data.userMongoId) {                    
             return new Response('Unauthorized', {
@@ -32,7 +29,7 @@ export const POST = async (req) => {
         });
     } catch (error) {
         console.log('Error creating post:', error);
-        return new Response("Error creating post", {
+        return new Response('Error creating post', {
             status: 500,
         });
     }

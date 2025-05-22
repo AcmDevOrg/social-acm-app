@@ -12,9 +12,7 @@ export const connect = async () => {
     try {
         
         await mongoose.connect(process.env.MONGODB_URI, {
-            dbName: 'social-acm-app',
-             useNewUrlParser: true,
-             useUnifiedTopology: true,
+            dbName: 'social-acm-app',             
         });
         console.log('Connected to MongoDB');
         initialized = true;

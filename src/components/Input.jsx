@@ -80,7 +80,7 @@ export default function Input() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                userMongoId: user?.publicMetadata?.userMongoId,
+                userMongoId: user.publicMetadata.userMongoId,
                 name: user.fullName,
                 username: user.username,
                 text,
