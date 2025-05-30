@@ -7,23 +7,21 @@ import {
 } from 'react-icons/hi';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { modalAtom } from '@/atom/modalAtom';
-import { useRecoilState } from 'recoil';
+import { useModalStore } from '@/store/modalStore';
+
 
 export default function Icons({ post }) {
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(post.likes || []);
-  const [open, setOpen] = useRecoilState(modalAtom);
-  const [postId, setPostId] = useRecoilState(postIdAtom);
+  const{ isOpen, setOpen, setPostId } = useModalStore();
   const { user } = useUser();
   const router = useRouter();
 
-  const likePost = () => {
-    if (!user) {
-      return router.push('/sign-in');
-    }
+  const likePost = async () => {
+    if (!user) return router.push('/sign-in');
+    
     const like = fetch('/api/post/like', {
       method: 'PUT',
       headers: {
@@ -31,15 +29,15 @@ export default function Icons({ post }) {
         },
         body: JSON.stringify({ postId: post._id }),
     });
-    if (like && isLiked) {
-      setLikes(
-        likes.filter((like) => like !== user.publicMetadata.userMongoId )
-      );
-    }
-    if (like && !isLiked) {
-      setLikes([...likes, user.publicMetadata.userMongoId]);
+      if (like.ok) {
+        if(isLiked) {
+          setLikes(likes.filter((like) => like !== user.publicMetadata.userMongoId));
+      } else {    
+        setLikes([...likes, user.publicMetadata.userMongoId]);
+      }
     }
   };
+
     useEffect(() => {
       if (user && likes?.includes(user.publicMetadata.userMongoId)) {
         setIsLiked(true);
@@ -77,7 +75,7 @@ export default function Icons({ post }) {
                 if (!user) {
                   router.push('/sign-in');
                 } else {
-                  setOpen(!open);
+                  setOpen(true);
                   setPostId(post._id);
                 }
             }         

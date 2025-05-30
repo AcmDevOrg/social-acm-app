@@ -17,11 +17,11 @@ export default function Input() {
     const [postLoading, setPostLoading] = useState(false);
     
     
-    // useEffect(() => {
-    //     if (selectedFile) {
-    //         uploadImageToCloudinary();
-    //     }
-    // }, [selectedFile]);
+    useEffect(() => {
+        if (selectedFile) {
+            uploadImageToCloudinary();
+        }
+    }, [selectedFile]);
 
   // ✅ File input change handler
   const handleFileChange = async (e) => {
@@ -100,8 +100,8 @@ export default function Input() {
     }
   return (
     <div className='flex border-b border-gray-200 p-3 space-x-3 w-full'>
-        <Image
-        width={250} height={250}
+        <Image  
+        width={200} height={200}     
         src={user?.imageUrl} 
         alt='user-img' 
         className='h-11 w-11 rounded-full cursor-pointer hover:brightness-95 object-cover' 
@@ -114,7 +114,7 @@ export default function Input() {
             value={text} 
             onChange={(e) => setText(e.target.value)}
             ></textarea>
-            {selectedFile && imageFileUrl &&(
+            {selectedFile && (
                 <Image
                 onClick={() => {
                     setSelectedFile(null);

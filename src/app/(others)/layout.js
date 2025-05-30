@@ -5,7 +5,7 @@ import RightSidebar from "@/components/RightSidebar";
 import { ClerkProvider, ClerkLoaded, ClerkLoading } from '@clerk/nextjs';
 import Loader from '@/components/Loader';
 import SessionWrapper from "@/components/SessionWrapper";
-// import CommentModal from "@/components/CommentModal";
+import CommentModal from "@/components/CommentModal";
 
 
 const geistSans = Geist({
@@ -28,7 +28,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
-    <SessionWrapper>
+    
     <html lang='en'>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -37,6 +37,7 @@ export default function RootLayout({ children }) {
        <Loader />
        </ClerkLoading>
        <ClerkLoaded>
+        <SessionWrapper>
         <>
         <div className='flex justify-between max-w-6xl mx-auto'>
           <div className='h-screen border-r top-0 hidden sm:inline sticky'>
@@ -48,12 +49,13 @@ export default function RootLayout({ children }) {
             <RightSidebar />
             </div>
         </div>        
-        </>
-        {/* <CommentModal /> */}
+        </>        
+        <CommentModal />
+        </SessionWrapper>
        </ClerkLoaded>
       </body>
     </html>
-    </SessionWrapper>
+    
     </ClerkProvider>
   );
 }
