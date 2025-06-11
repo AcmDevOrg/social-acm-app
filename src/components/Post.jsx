@@ -26,7 +26,7 @@ export default function Post({ post }) {
             </h4>
             <span className='text-xs truncate max-w-32'>@{post?.username}</span>
             {/* add dot space here */}
-            <span className='text-xl text-gray-500'>╗</span>
+            <span className='text-xl text-gray-500'>─</span>
             <span className='text-xs text-gray-500 flex-1 truncate max-w-32'>
               {moment(post?.createdAt).fromNow()}
             </span>

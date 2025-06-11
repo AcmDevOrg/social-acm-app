@@ -5,4 +5,6 @@ export const useModalStore = create((set) => ({
   postId: '',
   setOpen: (isOpen) => set({ isOpen }),
   setPostId: (postId) => set({ postId }),
+   refresh: 0,
+  incrementRefresh: () => set((state) => ({ refresh: state.refresh + 1 })),
 }));

@@ -1,7 +1,8 @@
 'use client'
-import React, { useCallback } from 'react';
+
 import { useUser } from '@clerk/nextjs';
 import { useRef, useState, useEffect } from 'react';
+import { useModalStore } from '@/store/modalStore';
 import { MdAddAPhoto } from "react-icons/md";
 import Image from 'next/image';
 
@@ -13,26 +14,22 @@ export default function Input() {
     const [imageFileUrl, setImageFileUrl] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
     const [imageFileUploading, setImageFileUploading] = useState(false);
+    const incrementRefresh = useModalStore((state) => state.incrementRefresh);
     const [text, setText] = useState('');
     const [postLoading, setPostLoading] = useState(false);
     
     
-    useEffect(() => {
-        if (selectedFile) {
-            uploadImageToCloudinary();
-        }
-    }, [selectedFile]);
+    // useEffect(() => {
+    //     if (selectedFile) {
+    //         uploadImageToCloudinary();
+    //     }
+    // }, [selectedFile]);
 
   // ✅ File input change handler
   const handleFileChange = async (e) => {
   const file = e.target.files?.[0];
   if (file) {
     setSelectedFile(file);
-
-    // Preview the image locally
-      const base64 = await toBase64(file);
-      setImageFileUrl(base64);
-
       // Upload image
       setImageFileUploading(true);
       try {
@@ -44,6 +41,9 @@ export default function Input() {
         setImageFileUploading(false);
       }
     }
+        // Preview the image locally
+      const base64 = await toBase64(file);
+      setImageFileUrl(base64);
   };
 
   const uploadImageToCloudinary = async (file) => {
@@ -61,8 +61,10 @@ export default function Input() {
     throw new Error(data.error || 'Upload failed');
   }
 
-  return data.url || null;
+  return data.url;
+  
 };
+
 
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -73,14 +75,21 @@ export default function Input() {
     });
     
     const handleSubmit = async () => {
-        setPostLoading(true);        
+
+      if (!user?.publicMetadata?.userMongoId) {
+        console.error("Missing userMongoId. Cannot submit post.");
+        return;
+      }
+
+        setPostLoading(true); 
+
         const response = await fetch('/api/post/create', {
             method: 'POST',
             headers: {                
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                userMongoId: user.publicMetadata.userMongoId,
+                userMongoId: user?.publicMetadata?.userMongoId,
                 name: user.fullName,
                 username: user.username,
                 text,
@@ -88,11 +97,13 @@ export default function Input() {
                 image: imageFileUrl,
             }),
         });
+        
         setPostLoading(false);
         setText('');
         setSelectedFile(null);
         setImageFileUrl(null);
-        location.reload();
+         incrementRefresh();
+         
     };
 
     if (!isSignedIn || !isLoaded) {
@@ -114,7 +125,7 @@ export default function Input() {
             value={text} 
             onChange={(e) => setText(e.target.value)}
             ></textarea>
-            {selectedFile && (
+            {selectedFile && imageFileUrl &&(
                 <Image
                 onClick={() => {
                     setSelectedFile(null);
@@ -122,7 +133,7 @@ export default function Input() {
                 }}
                 width={300} 
                 height={300}
-                src={imageFileUrl} 
+                src={imageFileUrl || null} 
                 alt='selected-img' 
                 className={`w-full max-h-[250px] object-cover cursor-pointer ${
                     imageFileUploading ? 'animate-pulse' : ''

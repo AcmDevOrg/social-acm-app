@@ -1,8 +1,6 @@
 import Post from "@/lib/models/post.model";
 import { connect } from "@/lib/mongodb/mongoose";
 
-
-
 export const POST = async (req) => {
     try {
         await connect();
@@ -12,7 +10,7 @@ export const POST = async (req) => {
         });
     } catch (error) {
         console.log('Error getting posts:', error);
-        return new Response('Error getting posts', {
+        return new Response('error getting posts', {
             status: 500,
         });
     }

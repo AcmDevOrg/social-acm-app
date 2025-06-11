@@ -38,9 +38,8 @@ export default function RootLayout({ children }) {
        </ClerkLoading>
        <ClerkLoaded>
         <SessionWrapper>
-        <>
-        <div className='flex justify-between max-w-6xl mx-auto'>
-          <div className='h-screen border-r top-0 hidden sm:inline sticky'>
+                <div className='flex justify-between max-w-6xl mx-auto'>
+          <div className='hidden sm:inline border-r h-screen sticky top-0'>
             <LeftSidebar />
             </div>
 
@@ -48,8 +47,7 @@ export default function RootLayout({ children }) {
           <div className='lg:flex-col p-3 h-screen border-l hidden lg:flex w-[24rem]'>
             <RightSidebar />
             </div>
-        </div>        
-        </>        
+        </div> 
         <CommentModal />
         </SessionWrapper>
        </ClerkLoaded>
