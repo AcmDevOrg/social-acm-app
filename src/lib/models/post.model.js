@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 import { comment } from "postcss";
 
 const postSchema = new mongoose.Schema(
@@ -15,6 +16,9 @@ const postSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true,
+            unique: false,
+            index: false,
+            default: null,
         },
         name: {
             type: String,

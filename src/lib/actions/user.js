@@ -19,7 +19,7 @@ export const createOrUpdateUser = async (
                 lastName: last_name,
                 avatar: image_url,
                 email: email_addresses[0].email_address,
-                username,
+                username: clerkUser.username || clerkUser.id, // fallback
             },
         },
         { new: true, upsert: true }

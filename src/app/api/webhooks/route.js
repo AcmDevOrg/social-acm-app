@@ -70,7 +70,7 @@ export async function POST(req) {
         first_name,
         last_name,
         image_url,
-        email_addresses,
+        email_addresses?.[0]?.email_address || '',
         username
       );
       if (user && eventType === 'user.created') {
@@ -78,7 +78,7 @@ export async function POST(req) {
           
           await clerkClient.users.updateUserMetadata(id, {
             publicMetadata: {
-              userMongoId: user._id, 
+              userMongoId: user._id.toString(), 
             },
           });
            

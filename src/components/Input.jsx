@@ -5,6 +5,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useModalStore } from '@/store/modalStore';
 import { MdAddAPhoto } from "react-icons/md";
 import Image from 'next/image';
+import mongoose from 'mongoose';
 
 
 export default function Input() {
@@ -89,7 +90,11 @@ export default function Input() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                userMongoId: user?.publicMetadata?.userMongoId,
+                userMongoId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    required: true,
+                    ref: 'User',
+                  },
                 name: user.fullName,
                 username: user.username,
                 text,
