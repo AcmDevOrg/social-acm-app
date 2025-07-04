@@ -2,7 +2,7 @@ import React from "react";
 import ".././globals.css";
 import { ClerkProvider, ClerkLoaded, ClerkLoading} from '@clerk/nextjs';
 import Loader from '@/components/Loader';
-import SessionWrapper from "@/components/SessionWrapper";
+// import SessionWrapper from "@/components/SessionWrapper";
 
 export const metadata = {
     title: 'Acm Social App',
@@ -18,9 +18,7 @@ export default function RootLayout({ children }) {
        <Loader />
        </ClerkLoading>
        <ClerkLoaded> 
-        <SessionWrapper>
-            {children}       
-        </SessionWrapper>               
+            {children}
         </ClerkLoaded>
        </body>
         </html>

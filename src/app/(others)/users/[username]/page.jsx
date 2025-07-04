@@ -36,8 +36,7 @@ export default async function UserPage({ params }) {
         <div className='flex items-center space-x-2 p-3 border-b border-gray-200'>
           <div className='p-4'>
             <div className='flex items-center space-x-4'>
-              <Image 
-              width={50} height={50}
+              <img               
                 src={data.avatar} 
                 alt='Profile' 
                 className='h-16 w-16 rounded-full' 
