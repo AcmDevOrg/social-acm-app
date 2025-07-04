@@ -1,8 +1,8 @@
-import FollowButton from '@/components/FollowButton';
+// import FollowButton from '@/components/FollowButton';
 import Link from 'next/link';
 import React from 'react'
 import { HiArrowLeft } from 'react-icons/hi';
-import Post from '@/components/Post';
+// import Post from '@/components/Post';
 import Image from 'next/image';
 
 export default async function UserPage({ params }) {

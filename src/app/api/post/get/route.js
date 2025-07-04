@@ -1,5 +1,5 @@
 import React from 'react';
-import Post from "@/lib/models/post.model";
+// import Post from "@/lib/models/post.model";
 import { connect } from "@/lib/mongodb/mongoose";
 import { currentUser } from "@clerk/nextjs/server";
 
