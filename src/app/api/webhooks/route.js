@@ -100,18 +100,18 @@ export async function POST(req) {
   // console.log(clerkUser.publicMetadata); // ✅ works now
   
 
-  // if (eventType === 'user.deleted') {
+  if (eventType === 'user.deleted') {
   
-  //   const { id } = evt?.data;
-  //   try {
-  //     await deleteUser(id);
-  //   } catch (error) {
-  //     console.log('Error deleting user:', error);
-  //     return new Response('Error occured', {
-  //       status: 400,
-  //     });      
-  //   }
-  // }
+    const { id } = evt?.data;
+    try {
+      await deleteUser(id);
+    } catch (error) {
+      console.log('Error deleting user:', error);
+      return new Response('Error occured', {
+        status: 400,
+      });      
+    }
+  }
 
   return new Response('', { status: 200 });
 }
