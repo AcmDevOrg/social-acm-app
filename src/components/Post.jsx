@@ -2,7 +2,7 @@ import moment from 'moment'
 import Link from 'next/link'
 import React from 'react'
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
-// import Icons from './Icons';
+import Icons from './Icons';
 import Image from 'next/image';
 
 export default function Post({ post }) {
@@ -41,7 +41,7 @@ export default function Post({ post }) {
           src={post?.image} 
           className='rounded-2xl mr-2' />
         </Link>
-        {/* <Icons post={post} id={post._id} /> */}
+        <Icons post={post} id={post._id} />
       </div>
       </div>
   );
