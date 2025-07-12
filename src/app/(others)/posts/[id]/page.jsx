@@ -1,16 +1,16 @@
-// import Comments from '@/components/Comments';
-// import Post from '@/components/Post';
+import Comments from '@/components/Comments';
+import Post from '@/components/Post';
 import Link from 'next/link';
 import { HiArrowLeft } from 'react-icons/hi';
 
 export default async function PostPage({ params }) {
-  let data = null;
+  let data = [];
   try {
     const result = await fetch(process.env.URL + '/api/post/get', {
       method: 'POST',
       body: JSON.stringify({ postId: params.id }),
       cache: 'no-store',
-    });
+    })
     data = await result.json();
   } catch (error) {
     console.log('Error getting post:', error);

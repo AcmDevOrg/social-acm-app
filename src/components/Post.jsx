@@ -9,12 +9,10 @@ export default function Post({ post }) {
   return (
     <div className='flex p-3 border-b border-gray-200 w-full hover:bg-gray-50'>
       <Link href={`/users/${post?.username}`}>
-      <Image
-        width={50}
-        height={50}
+      <img        
         src={post?.profileImg}
         alt='user-img'
-        className='h-11 w-11 rounded-full mr-4'
+        className='h-9 w-9 rounded-full mr-4'
         />
       </Link>
       <div className='flex-1'>

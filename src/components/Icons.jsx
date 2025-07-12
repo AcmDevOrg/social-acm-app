@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { 
   HiOutlineChat, 
   HiOutlineHeart, 
@@ -7,7 +7,7 @@ import {
 } from 'react-icons/hi';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useModalStore } from '@/store/modalStore';
 
@@ -15,22 +15,26 @@ import { useModalStore } from '@/store/modalStore';
 export default function Icons({ post }) {
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(post.likes || []);
-  const{ isOpen, setOpen, setPostId } = useModalStore();
+  const{ isOpen, setOpen, postId, setPostId } = useModalStore();
   const { user } = useUser();
   const router = useRouter();
 
-  const likePost = () => {
+  const abort = new AbortController();
+
+  const likePost = async () => {
     if (!user) {
       return router.push('/sign-in');
     }
-    const like = fetch('/api/post/like', {
+    const like = await fetch('/api/post/like', { 
+      signal: abort.signal, 
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         },
         body: JSON.stringify({ postId: post._id }),
     });
-      if (like.ok) {
+    return () => abort.abort(); 
+      if (res.ok) {
         if(isLiked) {
           setLikes(likes.filter((like) => like !== user.publicMetadata.userMongoId));
       } else {    
@@ -73,11 +77,10 @@ export default function Icons({ post }) {
         className='h-9 w-9 cursor-pointer rounded-full transition duration-500 ease-in-out p-2 
         hover:text-sky-500 hover:bg-sky-100' 
         onClick={() => {
-                if (!user) {
-                  router.push('/sign-in');
-                } else {
-                  setOpen(!open);
+                if (!user) router.push('/sign-in');
+                else {
                   setPostId(post._id);
+                  setOpen(true);                  
                 }
             }}
         />
