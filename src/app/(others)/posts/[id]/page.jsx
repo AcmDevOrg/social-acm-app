@@ -3,14 +3,16 @@ import Post from '@/components/Post';
 import Link from 'next/link';
 import { HiArrowLeft } from 'react-icons/hi';
 
-export default async function PostPage({ params }) {
+export default async function PostPage({ params: paramsPromise }) {
+  const { id } = await paramsPromise;
   let data = [];
   try {
     const result = await fetch(process.env.URL + '/api/post/get', {
       method: 'POST',
-      body: JSON.stringify({ postId: params.id }),
+      body: JSON.stringify({ postId: id }),
       cache: 'no-store',
     })
+    if (!result.ok) throw new Error(await result.text());
     data = await result.json();
   } catch (error) {
     console.log('Error getting post:', error);

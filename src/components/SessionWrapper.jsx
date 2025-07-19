@@ -12,7 +12,7 @@ export default function SessionWrapper({ children }) {
     const fetchPosts = async () => {
       try {
         const res = await fetch('/api/post/all', {
-          method: 'POST',
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },

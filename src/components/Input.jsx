@@ -18,9 +18,6 @@ export default function Input() {
     const incrementRefresh = useModalStore((state) => state.incrementRefresh);
     const [text, setText] = useState('');
     const [postLoading, setPostLoading] = useState(false);
-    
-    
-    
 
   // ✅ File input change handler
   const handleFileChange = async (e) => {
@@ -134,7 +131,7 @@ export default function Input() {
                 }}                
                 src={imageFileUrl } 
                 alt='selected-img' 
-                className={`w-full max-h-[250px] object-cover cursor-pointer ${
+                className={`w-full max-h-[200px] object-cover cursor-pointer ${
                     imageFileUploading ? 'animate-pulse' : ''
                     }`} 
                     /> 

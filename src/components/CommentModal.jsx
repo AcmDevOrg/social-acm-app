@@ -18,44 +18,44 @@ export default function CommentModal() {
   const router = useRouter();
   
 
-  if (!isLoaded) return null;
+  
+useEffect(() => {
+  // run only when a post id is present & modal is open
+  if (!postId || !isOpen) return;
 
-  useEffect(() => {    
-    const fetchPost = async () => {
-      if (!postId) return;
-        setPostLoading(true);
-        setInput('');
+  const fetchPost = async () => {
+    setPostLoading(true);
+    try {
+      const res = await fetch('/api/post/get', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ postId }),
+        cache: 'no-store',
+      });
 
-        try{
-        const response = await fetch('/api/post/get', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ postId }),
-        });
+      // 1️⃣ guard against empty / non‑json responses
+      const isJson = res.headers
+        .get('content-type')
+        ?.includes('application/json');
 
-        if (res.status === 200) {
-           const postData = await res.json();
-            setPost(postData);
-        // setInput('');
-        // setOpen(false);
-        // router.push(`/posts/${postId}`);
-        // setTimeout(() => {
-        //   router.refresh();
-        // }, 100);
-      } else {
-          setPostLoading(false);
-          console.log('Failed to fetch post', res.status);
-        }
-      } catch(err) {
-        console.error('Fetch error', err);
-      } finally {
-        setPostLoading(false);
+      if (!res.ok || !isJson) {
+        console.error('Failed to fetch post', res.status);
+        return;
       }
-    };
-    fetchPost();
-  }, [postId]);
+
+      const postData = await res.json();
+      setPost(postData);
+    } catch (err) {
+      console.error('Fetch error', err);
+    } finally {
+      setPostLoading(false);
+    }
+  };
+
+  fetchPost();
+}, [postId, isOpen]);          // 2️⃣ include isOpen in deps
+
+if (!isLoaded) return null;
 
   const sendComment = async () => {
     if (!user || isSubmitting) {
@@ -87,7 +87,7 @@ export default function CommentModal() {
       } else {
         console.error('Comment failed', await res.text());
       } 
-    } catch {
+    } catch(err) {
       console.error('Network error', err);
     } finally {
       setIsSubmitting(false);
@@ -96,7 +96,7 @@ export default function CommentModal() {
     
 
   return (
-    <>
+    <div>
       {isOpen && (
     <Modal
       isOpen={isOpen}
@@ -129,18 +129,18 @@ export default function CommentModal() {
             className='h-11 w-11 rounded-full mr-4' 
             />
           <h4 className='font-bold sm:text-[16px] text-[15px] hover:underline truncate'>
-           {postLoading ? 'Name' : post?.name}
+           {postLoading ? 'Name' : post.name}
           </h4>
           <span className='text-sm sm:text-[15px] truncate'>
-            @{postLoading ? 'username' : post?.username}
+            @{postLoading ? 'username' : post.username}
             </span>
         </div>
         <p className='text-gray-500 text-[15px] sm:text-[16px] ml-16 mb-2'>
-          {postLoading ? 'Loading...' : post?.text}
+          {postLoading ? 'Loading...' : post.text}
           </p>
         <div className='flex p-3 space-x-3'>
           <img          
-           src={user?.imageUrl} 
+           src={user.imageUrl} 
            alt='user-img' 
            className='h-11 w-11 rounded-full cursor-pointer hover:brightness-95' 
            /> 
@@ -168,6 +168,6 @@ export default function CommentModal() {
       </div>
     </Modal>
     )};
-    </>
+    </div>
   );
 }

@@ -1,23 +1,30 @@
-// import FollowButton from '@/components/FollowButton';
+import FollowButton from '@/components/FollowButton';
 import Link from 'next/link';
 import React from 'react'
 import { HiArrowLeft } from 'react-icons/hi';
 import Post from '@/components/Post';
 import Image from 'next/image';
 
-export default async function UserPage({ params }) {
-  let data = null;
+export default async function UserPage({ params:paramsPromise }) {
+ const { username } = await paramsPromise;
+  let data = [];
   try {
     const result = await fetch(process.env.URL + '/api/user/get', {
       method: 'POST',
-      body: JSON.stringify({ username: params.username }),
+      body: JSON.stringify({ username: username }),
       cache: 'no-store',
+      herders: {
+        'Content-Type': 'application/json',
+      },
     });
     data = await result.json();
     const userPosts = await fetch(process.env.URL + '/api/post/user/get', {
       method: 'POST',
       body: JSON.stringify({ userId: data._id }),
       cache: 'no-store',
+      herders: {
+        'Content-Type': 'application/json',
+      },
     });
     data.posts = await userPosts.json();
   } catch (error) {
@@ -49,14 +56,18 @@ export default async function UserPage({ params }) {
                 </div>
             </div>
             <div className='mt-4 flex space-x-4'>
+              {data?.following &&(
               <div>
                 <span className='font-bold'>{data.following.length}</span>{' '}
                 Following
               </div>
+              )}
+              {data?.followers && (
               <div>
                 <span className='font-bold'>{data.followers.length}</span>{' '}
                 Followers
               </div>
+              )}
             </div>
             <div className='mt-4 flex-1'>
               <FollowButton user={data} />

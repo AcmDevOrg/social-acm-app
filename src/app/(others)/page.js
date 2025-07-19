@@ -3,13 +3,20 @@ import React from 'react';
 import Feed from '@/components/Feed';
 
 export default async function Home() {
-  let data = null;
+  let data = [];
   try {
     const result = await fetch(process.env.URL + '/api/post/all', {
-      method: 'POST',
+      method: 'GET',
       cache: 'no-store',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
+    if(result.ok){
     data = await result.json();
+    } else {
+    const errText = await result.text();
+    }
   } catch (error) {
     console.error('Error fetching posts:', error);
   }

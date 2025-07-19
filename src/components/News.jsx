@@ -5,11 +5,12 @@ import { useState, useEffect } from 'react';
 
 export default function News() {
   const [news, setNews] = useState([]);
-  const [articleNum, setArticleNum] = useState(3);
+  const [articleNum, setArticleNum] = useState(5);
   useEffect(() => {
     fetch(`https://saurav.tech/NewsAPI/top-headlines/category/business/in.json`)
     .then((res) => res.json())
-    .then((data) => setNews(data.articles));
+    .then((data) => setNews(data.articles ?? [] ))
+    .catch((err) => console.error('News fatch failed:', err))
   }, []);
   return (
     <div className='text-gray-700 space-y-3 bg-gray-100 rounded-xl pt-2'>

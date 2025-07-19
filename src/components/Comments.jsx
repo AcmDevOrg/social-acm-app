@@ -1,6 +1,6 @@
 import Comment from './Comment';
 
-export default function Comments({ comments }) {
+export default function Comments({ comments = [] }) {
   const sortedComments = comments.sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
@@ -8,7 +8,7 @@ export default function Comments({ comments }) {
   return (
     <div>
       {sortedComments.map((comment) => (
-        <Comment key={comment.id} comment={comment} />
+        <Comment key={comment._id} comment={comment} />
       ))}
     </div>
   );
