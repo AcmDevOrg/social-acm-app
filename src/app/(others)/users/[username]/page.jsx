@@ -7,9 +7,13 @@ import Image from 'next/image';
 
 export default async function UserPage({ params:paramsPromise }) {
  const { username } = await paramsPromise;
+ const base = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : 'http://localhost:3000';
+
   let data = [];
   try {
-    const result = await fetch(process.env.URL + '/api/user/get', {
+    const result = await fetch(`${base}/api/user/get`, {
       method: 'POST',
       body: JSON.stringify({ username: username }),
       cache: 'no-store',
@@ -18,7 +22,7 @@ export default async function UserPage({ params:paramsPromise }) {
       },
     });
     data = await result.json();
-    const userPosts = await fetch(process.env.URL + '/api/post/user/get', {
+    const userPosts = await fetch(`${base}/api/post/user/get`, {
       method: 'POST',
       body: JSON.stringify({ userId: data._id }),
       cache: 'no-store',

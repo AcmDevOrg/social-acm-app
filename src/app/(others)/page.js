@@ -3,9 +3,13 @@ import React from 'react';
 import Feed from '@/components/Feed';
 
 export default async function Home() {
+  const base = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : 'http://localhost:3000';
+
   let data = [];
   try {
-    const result = await fetch(process.env.URL + '/api/post/all', {
+    const result = await fetch(`${base}/api/post/all`, {
       method: 'GET',
       cache: 'no-store',
       headers: {

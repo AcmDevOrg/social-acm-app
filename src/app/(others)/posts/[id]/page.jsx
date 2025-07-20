@@ -5,9 +5,13 @@ import { HiArrowLeft } from 'react-icons/hi';
 
 export default async function PostPage({ params: paramsPromise }) {
   const { id } = await paramsPromise;
+  const base = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : 'http://localhost:3000';
+
   let data = [];
   try {
-    const result = await fetch(process.env.URL + '/api/post/get', {
+    const result = await fetch(`${base}/api/post/get`, {
       method: 'POST',
       body: JSON.stringify({ postId: id }),
       cache: 'no-store',
