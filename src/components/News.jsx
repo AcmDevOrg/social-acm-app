@@ -31,7 +31,7 @@ export default function News() {
       </div>
     ))}
     <button 
-    onClick={() => setArticleNum(articleNum + 3)} 
+    onClick={() => setArticleNum(articleNum + 5)} 
     className='text-blue-300 pl-4 pb-3 hover:text-blue-400 text-sm'
     >
     Load More
