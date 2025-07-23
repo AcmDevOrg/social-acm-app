@@ -110,7 +110,8 @@ export default function Input() {
     }
   return (
     <div className='flex border-b border-gray-200 p-3 space-x-3 w-full'>
-        <img          
+        <Image
+        width={20} height={20}          
         src={user.imageUrl} 
         alt='user-img' 
         className='h-8 w-8 rounded-full cursor-pointer hover:brightness-95 object-cover' 
