@@ -109,7 +109,7 @@ export default function Input() {
         return null;
     }
   return (
-    <div className='flex border-b border-gray-200 p-3 space-x-3 w-full'>
+    <div className='flex flex-initial border-b border-gray-200 p-3 space-x-3 w-full'>
         <Image
         width={20} height={20}          
         src={user.imageUrl} 
@@ -137,7 +137,7 @@ export default function Input() {
                     }`} 
                     /> 
             )}
-            <div className='flex items-center justify-between pt-2.5'>
+            <div className='flex felx-inline items-center justify-between pt-2.5'>
                 <MdAddAPhoto 
                 className='h-15 w-15 p-2 text-sky-500 hover:bg-sky-100 rounded-full cursor-pointer' 
                 onClick={() => imagePickRef.current.click()}
