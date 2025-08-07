@@ -5,8 +5,11 @@ import { useRouter } from 'next/navigation';
 import News from './News';
 
 export default function RightSidebar() {
+
   const [input, setInput] = useState('');
   const router = useRouter();
+
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -15,7 +18,6 @@ export default function RightSidebar() {
       router.refresh();
     }, 100);
   };
-
   
   return (
     <>

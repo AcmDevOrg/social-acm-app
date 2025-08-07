@@ -1,7 +1,7 @@
 import Input from '@/components/Input';
 import React from 'react';
 import Feed from '@/components/Feed';
-import PageWrapper from '@/components/PageWrapper';
+
 
 export default async function Home() {
   const base = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
@@ -23,10 +23,10 @@ export default async function Home() {
   } catch (error) {
     console.error('Error fetching posts:', error);
   }
-  return (    
-    < PageWrapper >
-    <div className='min-h-screen mx-auto xl:max-w-3xl xl:border xl:border-gray-300'>
-      <div className='py-2 px-3 sticky top-0 z-50 bg-white border-b border-gray-200'>
+
+  return (        
+    <section className="w-full min-h-screen mx-auto px-3">
+      <div className='z-50 bg-white border-b border-gray-200 py-2'>
         
         <h2 className='text-lg sm:text-xl font-bold'>Home</h2>
       </div>
@@ -34,7 +34,6 @@ export default async function Home() {
           { <Input />}
           <Feed data={data} />
         </div>
-      </div>
-    </ PageWrapper >     
+      </section>
   );
 }

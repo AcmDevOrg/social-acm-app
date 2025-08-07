@@ -6,6 +6,8 @@ import { ClerkProvider, ClerkLoaded, ClerkLoading } from '@clerk/nextjs';
 import Loader from '@/components/Loader';
 import SessionWrapper from "@/components/SessionWrapper";
 import CommentModal from "@/components/CommentModal";
+import ClientLayout from "./ClientLayout";
+
 
 
 const geistSans = Geist({
@@ -33,34 +35,39 @@ export const viewport = {
 };
 
 export default function RootLayout({ children }) {
+
   return (    
     <ClerkProvider>
       <SessionWrapper>
-    {/* <html lang='en'> */}
-      <main
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+    <html lang='en'>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased pt-[56px] sm:pt-0`}
       >
       <ClerkLoading>
        <Loader />
        </ClerkLoading>
        <ClerkLoaded>
         
-                <div className='flex justify-between max-w-6xl mx-auto'>
-          <div className='hidden sm:inline border-r min-h-screen sticky top-0'>
-            <LeftSidebar />
-            </div>
+        <div className='hidden lg:flex justify-between max-w-screen mx-auto'>
+                <div className='hidden sm:inline h-screen top-0 flex-col'>
+                  <LeftSidebar />
+                </div>
 
-          <div className='w-2xl flex-1'>{children}</div>         
-          <div className='lg:flex-col p-3 min-h-screen border-l hidden lg:flex w-[24rem]'>
-            <RightSidebar />
-            </div>
-        </div> 
-       
+                <div className='w-2xl hidden lg:block border-l border-r lg:flex-col'>{children}</div>
+                <div className='flex-col p-3 h-screen hidden lg:block w-[24rem]'>
+                  <RightSidebar />
+                </div>
+              </div>
+             
+        <ClientLayout className='hidden lg:block'>          
+          {children}
+          </ClientLayout>
+          
         <CommentModal />
       
        </ClerkLoaded>
-      </main>
-    {/* </html> */}
+      </body>
+    </html>
    </SessionWrapper>
    </ClerkProvider>
   );
